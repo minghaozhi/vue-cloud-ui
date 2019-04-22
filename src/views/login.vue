@@ -9,8 +9,8 @@
     </el-form-item>
     <!-- <el-checkbox v-model="checked" checked class="remember">记住密码</el-checkbox> -->
     <el-form-item style="width:100%; margin-left: auto">
-      <el-button type="primary"  @click.native.prevent="reset">重 置</el-button>
-      <el-button type="primary" @click.native.prevent="login" :loading="logining">登 录</el-button>
+      <el-button type="primary"  @click.native.prevent="login" :loading="logining">登 录</el-button>
+      <el-button type="primary" @click.native.prevent="login">注 册</el-button>
     </el-form-item>
   </el-form>
 </template>
