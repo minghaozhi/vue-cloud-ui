@@ -10,13 +10,14 @@
     <!-- <el-checkbox v-model="checked" checked class="remember">记住密码</el-checkbox> -->
     <el-form-item style="width:100%; margin-left: auto">
       <el-button type="primary"  @click.native.prevent="login" :loading="logining">登 录</el-button>
-      <el-button type="primary" @click.native.prevent="login">注 册</el-button>
+      <el-button type="primary" @click.native.prevent="reset">注 册</el-button>
     </el-form-item>
   </el-form>
 </template>
 <script>
   /* eslint-disable */
-
+  import mock from '@/mock/index';
+  import router from '@/router'
   import Cookies from 'js-cookie';
   export default {
     name: 'Login',
@@ -40,13 +41,26 @@
     },
     methods: {
       login() {
-        let userInfo = {account:this.loginForm.account, password:this.loginForm.password}
-        this.$api.login(JSON.stringify(userInfo)).then((res) => {
-          Cookies.set('token', res.data.token) // 放置token到Cookie
-          sessionStorage.setItem('user', userInfo.account) // 保存用户到本地会话
-          this.$router.push('/')  // 登录成功，跳转到主页
-        }).catch(function(res) {
-          alert(res);
+        this.loading = true
+        let userInfo = {account:this.loginForm.account, password:this.loginForm.password, captcha:this.loginForm.captcha}
+        this.$api.login.login(userInfo).then((res) => {
+          if(res.msg != null) {
+            this.$message({
+              message: res.msg,
+              type: 'error'
+            })
+          } else {
+            Cookies.set('token', res.data.token) // 放置token到Cookie
+            sessionStorage.setItem('user', userInfo.account) // 保存用户到本地会话
+            this.$store.commit('menuRouteLoaded', false) // 要求重新加载导航菜单
+            this.$router.push('/')  // 登录成功，跳转到主页
+          }
+          this.loading = false
+        }).catch((res) => {
+          this.$message({
+            message: res.message,
+            type: 'error'
+          })
         });
       },
       reset() {

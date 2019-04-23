@@ -8,9 +8,12 @@ import 'element-ui/lib/theme-chalk/index.css'
 import api from './http'
 import i18n from './i18n'
 import store from './store'
+// import global from '@/utils/global'
+
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.use(api)
+Vue.prototype.global = global
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
